@@ -3,16 +3,17 @@
 
 <head>
     <title>
-        CRUD da
+        CRUD operation
     </title>
     <link rel="stylesheet" href="styles.css">
+    <script src="jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <table>
         <tr>
             <td>
-				<form id="frm"; onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off" style="width: 200px;">
+				<form id="frm"; onsubmit="onFormSubmit(event);" autocomplete="off" style="width: 200px;">
                     <div>
                         <label>Full Name*</label><label class="validation-error hide" id="fullNameValidationError"> </label>
                         <input type="text" name="fullName" id="fullName">
@@ -54,47 +55,4 @@
     </table>
     <script src="script.js"></script>
 </body>
-
-<script>
-	$(document).ready(function(){
-		$("#submit").click(function(){
-			$.ajax({
-				url:"insert.php",
-				type:"post",
-				data:$("#frm").serialize(),
-				success:function(d)
-				{
-					// alert(d);
-					$("#frm")[0].reset();
-				}
-				});
-		});
-	});
-	
-	$(document).ready(function(){
-		$.ajax({
-			url:"result.php",
-			success:function(data)
-			{
-				$('.dy_data').html(data);
-			}
-		});
-	});
-	
-	$(document).ready(function(){
-		
-	});
-	
-	function ondeleterecord(id){
-		$.ajax({
-			url: "delete.php",
-			type: "post",
-			data:{id:id},
-			success: function(data){
-				alert(data);
-			}
-		});
-	}
-	
-</script>
 </html>
