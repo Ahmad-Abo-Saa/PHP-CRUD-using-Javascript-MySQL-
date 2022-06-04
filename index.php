@@ -1,4 +1,3 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
 
@@ -55,8 +54,6 @@
     </table>
     <script src="script.js"></script>
 </body>
-<p onclick="test()">asdkfask</p>
-
 
 <script>
 	$(document).ready(function(){
