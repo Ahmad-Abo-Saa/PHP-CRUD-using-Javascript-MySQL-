@@ -11,35 +11,37 @@
 </head>
 
 <body>
-    <table>
-        <tr>
-            <td>
-                <form id="form" onsubmit="onFormSubmit(event);" autocomplete="off" style="width: 200px;">
-                    <div class="mb-2">
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-4">
+                <form id="form" onsubmit="onFormSubmit(event);">
+                    <div class="mb-3">
                         <label>Full name</label>
-                        <input type="text" name="full_name" id="full_name" required>
+                        <input type="text" name="full_name" id="full_name" class="form-control" required>
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" id="email" required>
+                        <input type="email" name="email" id="email" class="form-control" required>
                     </div>
-                    <div class="mb-2">
-                        <label>Password</label>
-                        <input type="password" name="password" id="password" required>
-                    </div>
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <label>Type</label>
-                        <select id="type" name="type" required>
+                        <select id="type" name="type" class="form-control" required>
                             <option>Admin</option>
                             <option>User</option>
                         </select>
                     </div>
-                    <div class="form-action-buttons" style="width: 300px; height: 45px;">
-                        <input type="submit" value="Submit" id="submit">
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="text" name="password" id="password" class="form-control" required>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-2">
+                        <button type="button" id="cancel" class="btn btn-outline-danger mx-2" onclick="resetForm()">Cancel</button>
+                        <input type="submit" value="Submit" id="submit" class="btn btn-primary">
                     </div>
                 </form>
-            </td>
-            <td>
+            </div>
+            <div class="col-8">
                 <table class="list" id="users_list">
                     <thead>
                         <tr>
@@ -54,9 +56,9 @@
 
                     </tbody>
                 </table>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 

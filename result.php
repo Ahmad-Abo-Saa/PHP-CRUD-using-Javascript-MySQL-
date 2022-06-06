@@ -31,8 +31,8 @@ try {
 				<td><?php echo $row["type"]; ?></td>
 				<td><?php echo $row["password"]; ?></td>
 				<td>
-					<a onclick="onEdit('<?php echo $row["email"]; ?>')">Edit</a>
-					<a onclick="onDeleteRecord('<?php echo $row["email"]; ?>')">Delete</a>
+					<button class="btn btn-link" onclick="onEdit('<?php echo $row["email"]; ?>')">Edit</button>
+					<button class="btn btn-link" onclick="onDeleteRecord('<?php echo $row["email"]; ?>')">Delete</button>
 				</td>
 			</tr>
 <?php

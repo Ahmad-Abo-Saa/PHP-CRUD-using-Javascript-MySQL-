@@ -6,8 +6,8 @@ try {
 		echo "Not connected to server";
 	}
 
-	$id = $_REQUEST["id"];
-	$sql = "DELETE FROM crudapp WHERE id ='" . $id . "'";
+	$email = $_REQUEST["email"];
+	$sql = "DELETE FROM crud_app WHERE email ='" . $email . "'";
 	$result = $mysqli->query($sql);
 
 	if ($result) {

@@ -1,4 +1,9 @@
+let fullNameInput;
+
+let selectedRow = null;
+
 $(document).ready(function () {
+  fullNameInput = document.getElementById("full_name");
   $.ajax({
     url: "result.php",
     success: function (data) {
@@ -7,23 +12,21 @@ $(document).ready(function () {
   });
 });
 
-function onDeleteRecord(id) {
+function onDeleteRecord(email) {
   if (confirm("Are you sure to delete this record ?")) {
     $.ajax({
       url: "delete.php",
-      type: "post",
-      data: { id: id },
+      type: "POST",
+      data: { email },
       success: function (data) {
         alert(data);
-        const row = document.getElementById(id);
-        document.getElementById("employeeList").deleteRow(row.rowIndex);
+        const row = document.getElementById(email);
+        document.getElementById("users_list").deleteRow(row.rowIndex);
         resetForm();
       },
     });
   }
 }
-
-var selectedRow = null;
 
 function onFormSubmit(event) {
   event.preventDefault();
@@ -36,43 +39,48 @@ function onFormSubmit(event) {
 }
 
 function readFormData() {
-  var formData = {};
-  formData["full_name"] = document.getElementById("full_name").value;
-  formData["email"] = document.getElementById("email").value;
-  formData["type"] = document.getElementById("type").value;
-  formData["password"] = document.getElementById("password").value;
-  return formData;
+  return {
+    full_name: fullNameInput.value,
+    email: document.getElementById("email").value,
+    type: document.getElementById("type").value,
+    password: document.getElementById("password").value,
+  };
 }
 
 function insertNewRecord(data) {
   $.ajax({
     url: "insert.php",
     type: "post",
-    data: $("#form").serialize(),
+    data: { ...data, action: "insert" },
     success: function (d) {
-      resetForm();
-      var table = document
-        .getElementById("users_list")
-        .getElementsByTagName("tbody")[0];
-      var newRow = table.insertRow(table.length);
-      cell1 = newRow.insertCell(0);
-      cell1.innerHTML = data.full_name;
-      cell2 = newRow.insertCell(1);
-      cell2.innerHTML = data.email;
-      cell3 = newRow.insertCell(2);
-      cell3.innerHTML = data.type;
-      cell4 = newRow.insertCell(3);
-      cell4.innerHTML = data.password;
-      cell4 = newRow.insertCell(4);
-      cell4.innerHTML = `<a onClick="onEdit(this)">Edit</a>
-                       <a onClick="onDelete(this)">Delete</a>`;
+      if (d != "Inserted") {
+        alert(d);
+      } else {
+        resetForm();
+        var table = document
+          .getElementById("users_list")
+          .getElementsByTagName("tbody")[0];
+        var newRow = table.insertRow(table.length);
+        cell1 = newRow.insertCell(0);
+        cell1.innerHTML = data.full_name;
+        cell2 = newRow.insertCell(1);
+        cell2.innerHTML = data.email;
+        cell3 = newRow.insertCell(2);
+        cell3.innerHTML = data.type;
+        cell4 = newRow.insertCell(3);
+        cell4.innerHTML = data.password;
+        cell4 = newRow.insertCell(4);
+        cell4.innerHTML = `<button class="btn btn-link" onclick="onEdit(${data.email})">Edit</button>
+      <button class="btn btn-link" onclick="onDeleteRecord(${data.email})">Delete</button>`;
+      }
     },
   });
 }
 
 function resetForm() {
-  document.getElementById("full_name").value = "";
+  fullNameInput.value = "";
   document.getElementById("email").value = "";
+  document.getElementById("email").readOnly = false;
   document.getElementById("type").value = "";
   document.getElementById("password").value = "";
   selectedRow = null;
@@ -80,16 +88,28 @@ function resetForm() {
 
 function onEdit(id) {
   selectedRow = document.getElementById(id);
-  document.getElementById("full_name").value = selectedRow.cells[0].innerHTML;
+  fullNameInput.value = selectedRow.cells[0].innerHTML;
   document.getElementById("email").value = selectedRow.cells[1].innerHTML;
+  document.getElementById("email").readOnly = true;
   document.getElementById("type").value = selectedRow.cells[2].innerHTML;
   document.getElementById("password").value = selectedRow.cells[3].innerHTML;
 }
 
 function updateRecord(formData) {
-  selectedRow.cells[0].innerHTML = formData.full_name;
-  selectedRow.cells[1].innerHTML = formData.email;
-  selectedRow.cells[2].innerHTML = formData.type;
-  selectedRow.cells[3].innerHTML = formData.password;
-  resetForm();
+  $.ajax({
+    url: "insert.php",
+    type: "POST",
+    data: { ...formData, action: "update" },
+    success: function (d) {
+      if (d != "Updated") {
+        alert(d);
+      } else {
+        selectedRow.cells[0].innerHTML = formData.full_name;
+        selectedRow.cells[1].innerHTML = formData.email;
+        selectedRow.cells[2].innerHTML = formData.type;
+        selectedRow.cells[3].innerHTML = formData.password;
+        resetForm();
+      }
+    },
+  });
 }
